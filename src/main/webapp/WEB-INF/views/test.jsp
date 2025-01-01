@@ -10,6 +10,7 @@
 <h2>설정 테스트 ${name}</h2>
 <div>JSP 뿌리기</div>
 <c:forEach var="item" items="${list}" varStatus="idx">
+    ${idx.index} : ${item} <br />
 </c:forEach>
 </body>
 </html>
