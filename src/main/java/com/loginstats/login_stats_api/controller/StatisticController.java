@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -83,6 +84,21 @@ public class StatisticController {
 
         List<DepartmentYearMonthCountDto> result = statisticService.getDepartmentYearMonthLogins(year, month);
         if (result.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body("No data");
+        }
+        return ResponseEntity.ok(result);
+    }
+    @RequestMapping(value="/api/v1/logins/exclude-holidays/month/{yearMonth}", produces = "application/json")
+    @ResponseBody
+    public Object getExcludeHolidaysYearMonthLoginCount(
+            @PathVariable("yearMonth") String yearMonth) throws Exception {
+
+        // yearMonth를 Year와 Month로 분리
+        String year = yearMonth.substring(0, 4); // 앞 4자리: 연도
+        String month = yearMonth.substring(4, 6); // 뒤 2자리: 월
+
+        ExcludeHolidaysYearMonthCountDto result = statisticService.getExcludeHolidaysYearMonthLogins(year, month);
+        if (result == null) {
             return ResponseEntity.status(HttpStatus.OK).body("No data");
         }
         return ResponseEntity.ok(result);

@@ -71,7 +71,18 @@
         GROUP BY
             YEAR(createDate), MONTH(createDate), department
     </select>
-
+    <select id="selectExcludeHolidaysYearMonthLogin" parameterType="map" resultType="Integer">
+        SELECT COUNT(DISTINCT userID)
+        FROM request_info
+        WHERE YEAR(createDate) = #{year}
+        AND MONTH(createDate) = #{month}
+        <if test="holidays != null and holidays.size() > 0">
+            AND DATE(createDate) NOT IN
+            <foreach collection="holidays" item="holiday" open="(" close=")" separator=",">
+                #{holiday}
+            </foreach>
+        </if>
+    </select>
 
 
 

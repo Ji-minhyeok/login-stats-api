@@ -1,6 +1,5 @@
 package com.loginstats.login_stats_api.dao;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,4 +14,5 @@ public interface StatisticMapper {
     YearAverageCountDto selectYearAverageLogin(String year);
     YearMonthAverageCountDto selectYearMonthAverageLogin(Map<String, String> params);
     List<DepartmentYearMonthCountDto> selectDepartmentYearMonthLogin(Map<String, String> params);
+    Integer selectExcludeHolidaysYearMonthLogin(Map<String, Object> params);
 }
