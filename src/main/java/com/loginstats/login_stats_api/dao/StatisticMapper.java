@@ -1,16 +1,18 @@
 package com.loginstats.login_stats_api.dao;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.loginstats.login_stats_api.dto.StatisticDto;
-import com.loginstats.login_stats_api.dto.YearCountDto;
-import com.loginstats.login_stats_api.dto.YearMonthCountDto;
+import com.loginstats.login_stats_api.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface StatisticMapper {
 
     YearCountDto selectYearLogin(String year);
-    YearMonthCountDto selectYearMonthLogin(String yearMonth);
-
+    YearMonthCountDto selectYearMonthLogin(Map<String, String> params);
+    YearAverageCountDto selectYearAverageLogin(String year);
+    YearMonthAverageCountDto selectYearMonthAverageLogin(Map<String, String> params);
+    List<DepartmentYearMonthCountDto> selectDepartmentYearMonthLogin(Map<String, String> params);
 }

@@ -6,16 +6,74 @@
 <mapper namespace="com.loginstats.login_stats_api.dao.StatisticMapper">
 
     <select id="selectYearLogin" parameterType="string" resultType="YearCountDto">
-        select concat('20', #{year}) as year, count(*) as totCnt
-        from statistic7.request_info ri
-        where left(ri.create_date, 2) = #{year};
+        SELECT
+            YEAR(createDate) AS year,          -- DTO의 year 필드와 매핑
+            COUNT(DISTINCT userID) AS totCnt   -- DTO의 totCnt 필드와 매핑
+        FROM
+            request_info
+        WHERE
+            YEAR(createDate) = #{year}
+        GROUP BY
+            YEAR(createDate)
     </select>
 
 
-    <select id="selectYearMonthLogin" parameterType="string" resultType="YearMonthCountDto">
-        select concat('20', #{yearMonth}) as yearMonth, count(*) as totCnt
-        from statistic7.request_info ri
-        where left(ri.create_date, 4) = #{yearMonth};
+    <select id="selectYearMonthLogin" parameterType="map" resultType="YearMonthCountDto">
+        SELECT
+            YEAR(createDate) AS year,          -- DTO의 year 필드와 매핑
+            MONTH(createDate) AS month,        -- DTO의 month 필드와 매핑
+            COUNT(DISTINCT userID) AS totCnt   -- DTO의 totCnt 필드와 매핑
+        FROM
+            request_info
+        WHERE
+            YEAR(createDate) = #{year}
+          AND MONTH(createDate) = #{month}
+        GROUP BY
+            YEAR(createDate),
+            MONTH(createDate)
     </select>
+    <select id="selectYearAverageLogin" parameterType="String" resultType="YearAverageCountDto">
+        SELECT
+            #{year} AS year,  -- 전달받은 year 값을 year 필드와 매핑
+        (COUNT(DISTINCT userID) / 12) AS totCnt  -- 총 로그인 수를 12로 나눠서 월 평균 로그인 횟수 계산
+        FROM
+            request_info
+        WHERE
+            YEAR(createDate) = #{year}
+        GROUP BY
+            YEAR(createDate)
+    </select>
+    <select id="selectYearMonthAverageLogin" parameterType="map" resultType="YearMonthAverageCountDto">
+        SELECT
+            YEAR(createDate) AS year,          -- DTO의 year 필드와 매핑
+            MONTH(createDate) AS month,        -- DTO의 month 필드와 매핑
+            (COUNT(DISTINCT userID)/30) AS totCnt   -- 해당 월의 값을 30일로 나눠 DTO의 totCnt 필드와 매핑
+        FROM
+            request_info
+        WHERE
+            YEAR(createDate) = #{year}
+          AND MONTH(createDate) = #{month}
+        GROUP BY
+            YEAR(createDate),
+            MONTH(createDate)
+    </select>
+    <select id="selectDepartmentYearMonthLogin" parameterType="map" resultType="DepartmentYearMonthCountDto">
+        SELECT
+            YEAR(createDate) AS year,
+            MONTH(createDate) AS month,
+            COUNT(DISTINCT userID) AS totCnt,
+            department
+        FROM
+            request_info
+        WHERE
+            YEAR(createDate) = #{year}
+          AND MONTH(createDate) = #{month}
+        GROUP BY
+            YEAR(createDate), MONTH(createDate), department
+    </select>
+
+
+
+
 
 </mapper>
