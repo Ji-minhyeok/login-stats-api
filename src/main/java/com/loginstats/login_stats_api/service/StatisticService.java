@@ -17,7 +17,7 @@ import java.util.Set;
 @Service
 public class StatisticService {
 
-    private final RestTemplate restTemplate; //XML 관련 RestTemplate 활용
+    private final RestTemplate restTemplate;
     private final String serviceKey;
     public StatisticService(RestTemplate restTemplate,
                             @Value("${environment.serviceKey}") String serviceKey ) {
@@ -57,12 +57,12 @@ public class StatisticService {
     }
     public ExcludeHolidaysYearMonthCountDto getExcludeHolidaysYearMonthLogins(String year, String month) throws Exception {
         String holidaysJson = getHolidays(year, month); // 공휴일 정보 조회
-        Map<String, String> holidays = parseHolidays(holidaysJson);
+        Map<String, String> holidays = parseHolidays(holidaysJson); // JSON 형태의 공휴일 정보 파싱
 
-        // 2. 해당 월의 로그인 데이터 조회 (공휴일 제외)
-        Integer totCnt = getLoginCountExcludeHolidays(year, month, holidays); // 로그인 제외된 데이터 카운트
+        // 해당 월의 로그인 데이터 조회 (공휴일 제외)
+        Integer totCnt = getLoginCountExcludeHolidays(year, month, holidays);
 
-        // 3. 결과 반환
+
         ExcludeHolidaysYearMonthCountDto result = new ExcludeHolidaysYearMonthCountDto();
         result.setYear(Integer.parseInt(year));
         result.setMonth(Integer.parseInt(month));
@@ -73,10 +73,10 @@ public class StatisticService {
     }
 
     public String getHolidays(String year, String month) throws URISyntaxException {
-        // 이미 인코딩된 serviceKey를 그대로 사용
+        //환경 변수 사용
         String serviceKey = this.serviceKey;
 
-        // URI 객체를 사용하여 URL을 구성
+        // URL 구성
         String url = "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo"
                 + "?serviceKey=" + serviceKey
                 + "&pageNo=1"
@@ -146,15 +146,14 @@ public class StatisticService {
     }
 
     private Integer getLoginCountExcludeHolidays(String year, String month, Map<String, String> holidays) {
-        // holidays 맵에서 공휴일 날짜들만 추출
-        Set<String> holidayDates = holidays.keySet(); // 공휴일 날짜들
+        Set<String> holidayDates = holidays.keySet(); // holidays 맵에서 공휴일 날짜들(key)만 추출
 
-        // 2. 로그인 카운트를 공휴일을 제외한 데이터로 조회
+        //추출한 공휴일을 조합하여 파라미터 Map 객체 구성
         Map<String, Object> params = new HashMap<>();
         params.put("year", year);
         params.put("month", month);
-        params.put("holidays", holidayDates); // holidays에 해당하는 날짜 제외
+        params.put("holidays", holidayDates);
 
-        return statisticMapper.selectExcludeHolidaysYearMonthLogin(params);
+        return statisticMapper.selectExcludeHolidaysYearMonthLogin(params); //공휴일을 제외한 데이터로 조회
     }
 }

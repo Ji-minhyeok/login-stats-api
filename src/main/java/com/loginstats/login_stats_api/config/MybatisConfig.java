@@ -40,15 +40,5 @@ public class MybatisConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-    @Bean
-    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        // ObjectMapper 설정
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false); // 불필요한 null 값을 제거
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT); // JSON 보기 좋게 출력
-
-        // MappingJackson2HttpMessageConverter를 ObjectMapper와 함께 사용
-        return new MappingJackson2HttpMessageConverter(objectMapper);
-    }
 
 }

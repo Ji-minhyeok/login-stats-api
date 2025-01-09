@@ -53,10 +53,11 @@ SW 로그인 현황을 제공하는 REST API 서비스입니다.
   - 연간 월 평균 로그인 수
   - 월간 일 평균 로그인 수
   - 부서별 월별 로그인 수
-- API 가이드 수정 완료
+- API 가이드, SQL 수정 완료
   - [API 가이드](https://helix-dresser-0b7.notion.site/SW-API-15fcf67b16da8002a1abcf34758c690e?pvs=4)
-
-### 프로젝트 이슈 해결 과정
+  - [SQL 작성](https://helix-dresser-0b7.notion.site/3-SQL-16fcf67b16da80e39c9df970349852d0?pvs=4)
+---
+## 프로젝트 이슈 해결 과정
 
 ### OpenAPI URL 인코딩 문제
 - **문제**: OpenAPI 호출 시 URL 인코딩이 제대로 처리되지 않아 API 호출 오류가 발생.

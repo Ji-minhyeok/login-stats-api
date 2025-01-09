@@ -6,9 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-@TestPropertySource(properties = "API_SERVICE_KEY=1234")
+@TestPropertySource(properties = "environment.serviceKey=test")
 class LoginStatsApiApplicationTests {
-	@Value("${API_SERVICE_KEY}")
+	@Value("${environment.serviceKey}")
 	private String apiServiceKey;
 
 	@Test
